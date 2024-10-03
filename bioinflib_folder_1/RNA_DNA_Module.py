@@ -34,12 +34,12 @@ def transcribe(seq: str) -> str:
     return result
 
 
-def complement_RNA(seq: str) -> str:
+def complement_rna(seq: str) -> str:
     result = ''.join([ComplementRNA[i] for i in seq])
     return result
 
 
-def complement_DNA(seq: str) -> str:
+def complement_dna(seq: str) -> str:
     result = ''.join([ComplementDNA[i] for i in seq])
     return result
 
@@ -64,15 +64,15 @@ def is_rna(seq: str) -> bool:
     return unique_symbol <= nucleotides
 
 
-def ssDNA_MW(seq: str) -> int:
+def ssdna_mw(seq: str) -> int:
     return len(seq)*330
 
 
-def ssRNA_MW(seq: str) -> int:
+def ssrna_nw(seq: str) -> int:
     return len(seq)*340
 
 
-def GC_content(seq: str) -> float:
+def gc_content(seq: str) -> float:
     content = 0
     for nucl in seq:
         if nucl == 'G' or nucl == 'g' or nucl == 'C' or nucl == 'c':
@@ -80,7 +80,7 @@ def GC_content(seq: str) -> float:
     return round(content/len(seq)*100)
 
 
-def Tm_primer(seq: str) -> float:
+def tm_primer(seq: str) -> float:
     content_AT = 0
     content_GC = 0
     for nucl in seq:
