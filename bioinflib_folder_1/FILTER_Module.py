@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-def gc_content(seq):
+def gc_content(seq: str) -> float:
     content = 0
     for nucl in seq:
         if nucl == 'G' or nucl == 'g' or nucl == 'C' or nucl == 'c':
@@ -8,7 +8,7 @@ def gc_content(seq):
     return (content / len(seq)) * 100
 
 
-def average_quality(quality_string):
+def average_quality(quality_string: str) -> float:
     total_quality = 0
     for symbol in quality_string:
         quality = ord(symbol) - 33
