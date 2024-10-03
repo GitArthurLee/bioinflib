@@ -26,10 +26,10 @@ def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
     for seq in args[0:-1]:
         if action == 'complement':
             if RD.is_dna(seq):
-                complement_seq = RD.complement_DNA(seq)
+                complement_seq = RD.complement_dna(seq)
                 empty_list.append(complement_seq)
             elif RD.is_rna(seq):
-                complement_seq = RD.complement_RNA(seq)
+                complement_seq = RD.complement_rna(seq)
                 empty_list.append(complement_seq)
             else:
                 empty_list.append(f'{seq} is not RNA or DNA')
@@ -68,22 +68,22 @@ def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
 
         elif action == 'MW':
             if RD.is_dna(seq):
-                MW_seq = RD.ssDNA_MW(seq)
+                MW_seq = RD.ssdna_mw(seq)
                 empty_list.append(f'{MW_seq} Da for this DNA')
             elif RD.is_rna(seq):
-                MW_seq = RD.ssRNA_MW(seq)
+                MW_seq = RD.ssrna_mw(seq)
                 empty_list.append(f'{MW_seq} Da for this RNA')
             else:
                 empty_list.append(f"I don't know what {seq} is")
 
         elif action == 'GC':
             if RD.is_dna(seq) or RD.is_rna(seq):
-                GC_seq = RD.GC_content(seq)
+                GC_seq = RD.gc_content(seq)
                 empty_list.append(f'GC content is {GC_seq} %')
             else:
                 empty_list.append(f"I don't know what {seq} is")
 
-        elif action == 'Tm':
+        elif action == 'tm':
             if RD.is_dna(seq):
                 Tm_seq = RD.Tm_primer(seq)
                 empty_list.append(f'Tm is {Tm_seq} degrees Celsius')
