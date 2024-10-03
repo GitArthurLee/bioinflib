@@ -126,16 +126,16 @@ def filter_fastq(seqs: Dict[str, Tuple[str, str]],
     filtered_seqs = {}
 
     for name, (sequence, quality) in seqs.items():
+
         seq_length = len(sequence)
+        if length_bounds[0] <= seq_length <= length_bounds[1]:
 
-    if length_bounds[0] <= seq_length <= length_bounds[1]:
+            gc_percentage = FILTER.gc_content(sequence)
+            if gc_bounds[0] <= gc_percentage <= gc_bounds[1]:
 
-        gc_percentage = FILTER.gc_content(sequence)
-        if gc_bounds[0] <= gc_percentage <= gc_bounds[1]:
+                avg_quality = FILTER.average_quality(quality)
+                if avg_quality >= quality_threshold:
 
-            avg_quality = FILTER.average_quality(quality)
-            if avg_quality >= quality_threshold:
-
-                filtered_seqs[name] = (sequence, quality)
+                    filtered_seqs[name] = (sequence, quality)
 
     return filtered_seqs
