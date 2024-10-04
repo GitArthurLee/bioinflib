@@ -6,17 +6,17 @@
 
 <div align="center"> <h2 align="center"> Features </h2> </div>
 
-- DNA transcription
-- RNA transcription
-- Creating complementary sequences
-- Reversing sequences
-- Calculation of the molecular weight of single-stranded DNA and RNA
-- Counting the GC content
-- Calculation of the melting point of primers (Tm)
+###### `run_dna_rna_tools`
+- DNA and RNA transcription `trancribe`
+- Creating complementary sequences `complement`
+- Reversing sequences `reverse`
+- Calculation of the molecular weight of single-stranded DNA and RNA `MW`
+- Counting the GC-content `GC`
+- Calculation of the melting point of primers for PCR `tm`
 
-###### NEW
+###### $\color{red}{\text{NEW !}}$ `filter_fastq`
 - **Filtering sequences** by:
-   - GC content
+   - GC-content
    - average reading quality
    - length
 
@@ -24,7 +24,8 @@
 
 Clone the repository: `git clone git@github.com:GitArthurLee/bioinflib.git`
 
-###### Example
+<div align="center"> <h6 align="center"> Example of using </h6> </div>
+
 ``` python
 from bioinflib import filter_fastq
 
@@ -35,3 +36,4 @@ print(filter_fastq(EXAMPLE_SEQS, gc_bounds = 60, ength_bounds = 2**32, quality_t
 
 Created by aal1999arth@gmail.com
 
+Institute of Bioinformatics
