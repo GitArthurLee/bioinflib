@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-
 from typing import List, Tuple, Union, Dict
 from bioinflib_folder_1 import RNA_DNA_Module as RD
 from bioinflib_folder_1 import FILTER_Module as FILTER
@@ -7,94 +5,94 @@ from bioinflib_folder_1 import FILTER_Module as FILTER
 
 def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
     """
-    Выполняет различные операции с ДНК и РНК последовательностями.
+    Performs various operations with DNA and RNA sequences.
 
     Args:
-        *args: Аргументы включают:
-            - последовательности ДНК или РНК (строки)
-            - последнее значение должно быть строкой, обозначающей действие
+        *args: Arguments include:
+            - DNA or RNA sequences (strings)
+- the last value should be a string indicating an action
               ('complement', 'reverse_complement', 'transcribe', 'reverse',
               'what_is_that', 'MW', 'GC', 'Tm')
 
     Returns:
-        str или List[str]: Результат обработки последовательностей.
-        Если введена одна последовательность, возвращается строка,
-        если несколько — список из строк.
+        str or List[str]: The result of processing sequences.
+        If one sequence is entered, the string is returned,
+        if there are several, a list of strings.
     """
     action = args[-1]
-    empty_list = []
+    result = []
     for seq in args[0:-1]:
         if action == 'complement':
             if RD.is_dna(seq):
                 complement_seq = RD.complement_DNA(seq)
-                empty_list.append(complement_seq)
+                result.append(complement_seq)
             elif RD.is_rna(seq):
                 complement_seq = RD.complement_RNA(seq)
-                empty_list.append(complement_seq)
+                result.append(complement_seq)
             else:
-                empty_list.append(f'{seq} is not RNA or DNA')
+                result.append(f'{seq} is not RNA or DNA')
 
         elif action == 'reverse_complement':
             if RD.is_dna(seq):
                 rev_complement_seq = RD.reverse_complement_dna(seq)
-                empty_list.append(rev_complement_seq)
+                result.append(rev_complement_seq)
             elif RD.is_rna(seq):
                 rev_complement_seq = RD.reverse_complement_rna(seq)
-                empty_list.append(rev_complement_seq)
+                result.append(rev_complement_seq)
             else:
-                empty_list.append(f'{seq} is not RNA or DNA')
+                result.append(f'{seq} is not RNA or DNA')
 
         elif action == 'transcribe':
             if RD.is_dna(seq) or RD.is_rna(seq):
                 trans_seq = RD.transcribe(seq)
-                empty_list.append(trans_seq)
+                result.append(trans_seq)
             else:
-                empty_list.append(f'{seq} is not RNA or DNA')
+                result.append(f'{seq} is not RNA or DNA')
 
         elif action == 'reverse':
             if RD.is_dna(seq) or RD.is_rna(seq):
                 rev_seq = RD.reverse(seq)
-                empty_list.append(rev_seq)
+                result.append(rev_seq)
             else:
-                empty_list.append(f'{seq} is not RNA or DNA')
+                result.append(f'{seq} is not RNA or DNA')
 
         elif action == 'what_is_that':
             if RD.is_dna(seq):
-                empty_list.append(f'{seq} is DNA')
+                result.append(f'{seq} is DNA')
             elif RD.is_rna(seq):
-                empty_list.append(f'{seq} is RNA')
+                result.append(f'{seq} is RNA')
             else:
-                empty_list.append(f"I don't know what {seq} is")
+                result.append(f"I don't know what {seq} is")
 
         elif action == 'MW':
             if RD.is_dna(seq):
                 MW_seq = RD.ssDNA_MW(seq)
-                empty_list.append(f'{MW_seq} Da for this DNA')
+                result.append(f'{MW_seq} Da for this DNA')
             elif RD.is_rna(seq):
                 MW_seq = RD.ssRNA_MW(seq)
-                empty_list.append(f'{MW_seq} Da for this RNA')
+                result.append(f'{MW_seq} Da for this RNA')
             else:
-                empty_list.append(f"I don't know what {seq} is")
+                result.append(f"I don't know what {seq} is")
 
         elif action == 'GC':
             if RD.is_dna(seq) or RD.is_rna(seq):
                 GC_seq = RD.GC_content(seq)
-                empty_list.append(f'GC content is {GC_seq} %')
+                result.append(f'GC content is {GC_seq} %')
             else:
-                empty_list.append(f"I don't know what {seq} is")
+                result.append(f"I don't know what {seq} is")
 
         elif action == 'Tm':
             if RD.is_dna(seq):
                 Tm_seq = RD.Tm_primer(seq)
-                empty_list.append(f'Tm is {Tm_seq} degrees Celsius')
+                result.append(f'Tm is {Tm_seq} degrees Celsius')
             else:
-                empty_list.append(f"I can't do it for {seq}")
+                result.append(f"I can't do it for {seq}")
 
-    if len(empty_list) > 1:
-        return empty_list
+    if len(result) > 1:
+        return result
 
     else:
-        return empty_list[0]
+        return result[0]
 
 
 def filter_fastq(seqs: Dict[str, Tuple[str, str]],
@@ -102,20 +100,20 @@ def filter_fastq(seqs: Dict[str, Tuple[str, str]],
                  length_bounds: Union[Tuple[int, int], int] = (0, 2**32),
                  quality_threshold: int = 0) -> Dict[str, Tuple[str, str]]:
     """
-    Отбирает последовательности в формате fastq по различным параметрам.
+    Selects sequences in fastq format according to various parameters.
 
     Args:
-        seqs: Словарь с fastq-ридами. Ключ - имя последовательности,
-              значение - кортеж из двух строк: сама последовательность и ее качество.
-        gc_bounds: Интервал GC состава (в процентах) для фильтрации.
-                   Можно передать одно значение для указания верхней границы.
-        length_bounds: Интервал длины последовательности для фильтрации.
-                       Можно передать одно значение для указания верхней границы.
-        quality_threshold: Пороговое значение среднего качества рида для фильтрации.
-                           По-умолчанию 0 (шкала phred33).
+        seqs: A dictionary with fastq rows. The key is the name of the sequence,
+              the value is a tuple of two strings: the sequence itself and its quality.
+        gc_bounds: The GC composition interval (in percent) for filtering.
+                   You can pass a single value to indicate the upper limit.
+        length_bounds: The length interval of the sequence to filter.
+                       You can pass a single value to indicate the upper limit.
+        quality_threshold: The threshold value of the average read quality for filtering.
+                           The default value is 0 (phred33 scale).
 
     Returns:
-        Dict[str, Tuple[str, str]]: Словарь с отфильтрованными последовательностями.
+        Dict[str, Type[str, str]]: Dictionary with filtered sequences.
     """
     if isinstance(gc_bounds, (int, float)):
         gc_bounds = (0, gc_bounds)
