@@ -1,7 +1,7 @@
 import os
 
 
-def read_fastq(input_fastq: str):
+def read_fastq(input_fastq: str) -> None:
     with open(input_fastq, 'r') as file:
         while True:
             name = file.readline().strip()
@@ -14,7 +14,7 @@ def read_fastq(input_fastq: str):
             yield name, sequence, quality
 
 
-def write_fastq(output_fastq: str, name: str, sequence: str, quality: str):
+def write_fastq(output_fastq: str, name: str, sequence: str, quality: str) -> None:
     output_dir = "Filtered"
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
