@@ -126,7 +126,7 @@ def filter_fastq(input_fastq: str,
     for name, sequence, quality in FQ.read_fastq(input_fastq):
         seq_length = len(sequence)
         gc_percentage = FILTER.find_gc_content(sequence)
-        avg_quality = FILTER.average_quality(quality)
+        avg_quality = FILTER.find_average_quality(quality)
         if ((length_bounds[0] <= seq_length <= length_bounds[1])
             and (gc_bounds[0] <= gc_percentage <= gc_bounds[1])
             and (avg_quality >= quality_threshold)):
