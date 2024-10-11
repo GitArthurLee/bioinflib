@@ -1,5 +1,3 @@
-#! /usr/bin/env python
-
 Transcribe = {
     "a": "a", "A": "A",
     "t": "u", "T": "U",
@@ -25,54 +23,54 @@ ComplementDNA = {
 }
 
 
-def reverse(seq: str) -> str:
+def reverse(seq):
     return seq[::-1]
 
 
-def transcribe(seq: str) -> str:
+def transcribe(seq):
     result = ''.join([Transcribe[i] for i in seq])
     return result
 
 
-def complement_RNA(seq: str) -> str:
+def complement_RNA(seq):
     result = ''.join([ComplementRNA[i] for i in seq])
     return result
 
 
-def complement_DNA(seq: str) -> str:
+def complement_DNA(seq):
     result = ''.join([ComplementDNA[i] for i in seq])
     return result
 
 
-def reverse_complement_dna(seq: str) -> str:
+def reverse_complement_dna(seq):
     return reverse(complement_DNA(seq))
 
 
-def reverse_complement_rna(seq: str) -> str:
+def reverse_complement_rna(seq):
     return reverse(complement_RNA(seq))
 
 
-def is_dna(seq: str) -> bool:
+def is_dna(seq):
     unique_symbol = set(seq)
     nucleotides = set('ATGCatgc')
     return unique_symbol <= nucleotides
 
 
-def is_rna(seq: str) -> bool:
+def is_rna(seq):
     unique_symbol = set(seq)
     nucleotides = set('AUGCaugc')
     return unique_symbol <= nucleotides
 
 
-def ssDNA_MW(seq: str) -> int:
+def find_ssDNA_MW(seq):
     return len(seq)*330
 
 
-def ssRNA_MW(seq: str) -> int:
+def find_ssRNA_MW(seq):
     return len(seq)*340
 
 
-def GC_content(seq: str) -> float:
+def find_GC_content(seq):
     content = 0
     for nucl in seq:
         if nucl == 'G' or nucl == 'g' or nucl == 'C' or nucl == 'c':
@@ -80,7 +78,7 @@ def GC_content(seq: str) -> float:
     return round(content/len(seq)*100)
 
 
-def Tm_primer(seq: str) -> float:
+def find_Tm_primer(seq):
     content_AT = 0
     content_GC = 0
     for nucl in seq:
