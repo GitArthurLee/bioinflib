@@ -23,6 +23,9 @@
 ###### $\color{red}{\text{NEW!}}$ `convert_multiline_fasta_to_oneline`
 - Сonverts a multi-line sequence into a single line
 
+###### $\color{red}{\text{NEW!}}$ `parse_blast_output`
+- Parses the BLAST output, extracting a description of the first match for each request.
+
 <div align="center"> <h2 align="center"> Installation </h2> </div>
 
 Clone the repository: `git clone git@github.com:GitArthurLee/bioinflib.git`
