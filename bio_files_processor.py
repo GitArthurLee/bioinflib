@@ -26,4 +26,27 @@ def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str = Non
             outfile.write(header + '\n')
             outfile.write(sequence + '\n')
 
-# convert_multiline_fasta_to_oneline('example_multiline_fasta.fasta')
+
+def parse_blast_output(input_file: str, output_file: str) -> None:
+    """
+    Parses the BLAST output, extracting a description of the first match for each request.
+    
+    Arguments:
+    - input_file (str): Path to the input file with BLAST output.
+    - output_file (str): The path to the output file for recording match descriptions.
+    """
+    matches = []
+    with open(input_file, 'r') as infile:
+        for line in infile:
+            line = line.strip()
+            if 'Sequences producing significant alignments:' in line:
+                infile.readline()
+                infile.readline()
+                next_line = infile.readline().strip()
+                if next_line:
+                    description = next_line.split('[', 1)[0]
+                    matches.append(description)
+    matches = sorted(matches)
+    with open(output_file, 'w') as outfile:
+        for hit in matches:
+            outfile.write(f"{hit}\n")
