@@ -6,6 +6,6 @@ def find_gc_content(seq: str):
     return (content / len(seq)) * 100
 
 
-def average_quality(quality_string: str):
+def find_average_quality(quality_string: str):
     total_quality = sum(ord(char) - 33 for char in quality_string)
     return total_quality / len(quality_string)
