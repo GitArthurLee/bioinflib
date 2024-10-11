@@ -1,6 +1,7 @@
 from typing import List, Tuple, Union, Dict
 from bioinflib_folder_1 import RNA_DNA_Module as RD
 from bioinflib_folder_1 import FILTER_Module as FILTER
+from bioinflib_folder_1 import FASTQ_Module as FQ
 
 
 def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
@@ -10,7 +11,7 @@ def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
     Args:
         *args: Arguments include:
             - DNA or RNA sequences (strings)
-- the last value should be a string indicating an action
+            - the last value should be a string indicating an action
               ('complement', 'reverse_complement', 'transcribe', 'reverse',
               'what_is_that', 'MW', 'GC', 'Tm')
 
@@ -30,7 +31,7 @@ def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
                 complement_seq = RD.complement_RNA(seq)
                 result.append(complement_seq)
             else:
-                result.append(f'{seq} is not RNA or DNA')
+                print(f'{seq} is not RNA or DNA')
 
         elif action == 'reverse_complement':
             if RD.is_dna(seq):
@@ -40,21 +41,21 @@ def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
                 rev_complement_seq = RD.reverse_complement_rna(seq)
                 result.append(rev_complement_seq)
             else:
-                result.append(f'{seq} is not RNA or DNA')
+                print(f'{seq} is not RNA or DNA')
 
         elif action == 'transcribe':
             if RD.is_dna(seq) or RD.is_rna(seq):
                 trans_seq = RD.transcribe(seq)
                 result.append(trans_seq)
             else:
-                result.append(f'{seq} is not RNA or DNA')
+                print(f'{seq} is not RNA or DNA')
 
         elif action == 'reverse':
             if RD.is_dna(seq) or RD.is_rna(seq):
                 rev_seq = RD.reverse(seq)
                 result.append(rev_seq)
             else:
-                result.append(f'{seq} is not RNA or DNA')
+                print(f'{seq} is not RNA or DNA')
 
         elif action == 'what_is_that':
             if RD.is_dna(seq):
@@ -66,27 +67,27 @@ def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
 
         elif action == 'MW':
             if RD.is_dna(seq):
-                MW_seq = RD.ssDNA_MW(seq)
-                result.append(f'{MW_seq} Da for this DNA')
+                MW_seq = RD.find_ssDNA_MW(seq)
+                result.append(MW_seq)
             elif RD.is_rna(seq):
-                MW_seq = RD.ssRNA_MW(seq)
-                result.append(f'{MW_seq} Da for this RNA')
+                MW_seq = RD.find_ssRNA_MW(seq)
+                result.append(MW_seq)
             else:
-                result.append(f"I don't know what {seq} is")
+                print(f"I don't know what {seq} is")
 
         elif action == 'GC':
             if RD.is_dna(seq) or RD.is_rna(seq):
-                GC_seq = RD.GC_content(seq)
-                result.append(f'GC content is {GC_seq} %')
+                GC_seq = RD.find_GC_content(seq)
+                result.append(f'{GC_seq}%')
             else:
-                result.append(f"I don't know what {seq} is")
+                print(f"I don't know what {seq} is")
 
         elif action == 'Tm':
             if RD.is_dna(seq):
-                Tm_seq = RD.Tm_primer(seq)
-                result.append(f'Tm is {Tm_seq} degrees Celsius')
+                Tm_seq = RD.find_Tm_primer(seq)
+                result.append(f'{Tm_seq} degrees Celsius')
             else:
-                result.append(f"I can't do it for {seq}")
+                print(f"I can't do it for {seq}")
 
     if len(result) > 1:
         return result
@@ -95,21 +96,22 @@ def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
         return result[0]
 
 
-def filter_fastq(seqs: Dict[str, Tuple[str, str]],
+def filter_fastq(input_fastq: str,
+                 output_fastq: str,
                  gc_bounds: Union[Tuple[float, float], float, int] = (0, 100),
                  length_bounds: Union[Tuple[int, int], int] = (0, 2**32),
-                 quality_threshold: int = 0) -> Dict[str, Tuple[str, str]]:
+                 quality_threshold: int = 0):
     """
     Selects sequences in fastq format according to various parameters.
 
     Args:
-        seqs: A dictionary with fastq rows. The key is the name of the sequence,
-              the value is a tuple of two strings: the sequence itself and its quality.
+        input_fastq: The path to the input FASTQ file.
+        output_fastq: The path to the output FASTQ file.
         gc_bounds: The GC composition interval (in percent) for filtering.
                    You can pass a single value to indicate the upper limit.
         length_bounds: The length interval of the sequence to filter.
                        You can pass a single value to indicate the upper limit.
-        quality_threshold: The threshold value of the average read quality for filtering.
+        quality_threshold: The threshold value of the average read quality.
                            The default value is 0 (phred33 scale).
 
     Returns:
@@ -121,19 +123,12 @@ def filter_fastq(seqs: Dict[str, Tuple[str, str]],
     if isinstance(length_bounds, (int, float)):
         length_bounds = (0, length_bounds)
 
-    filtered_seqs = {}
-
-    for name, (sequence, quality) in seqs.items():
-
+    for name, sequence, quality in FQ.read_fastq(input_fastq):
         seq_length = len(sequence)
-        if length_bounds[0] <= seq_length <= length_bounds[1]:
+        gc_percentage = FILTER.find_gc_content(sequence)
+        avg_quality = FILTER.average_quality(quality)
+        if ((length_bounds[0] <= seq_length <= length_bounds[1])
+            and (gc_bounds[0] <= gc_percentage <= gc_bounds[1])
+            and (avg_quality >= quality_threshold)):
 
-            gc_percentage = FILTER.gc_content(sequence)
-            if gc_bounds[0] <= gc_percentage <= gc_bounds[1]:
-
-                avg_quality = FILTER.average_quality(quality)
-                if avg_quality >= quality_threshold:
-
-                    filtered_seqs[name] = (sequence, quality)
-
-    return filtered_seqs
+            FQ.write_fastq(output_fastq, name, sequence, quality)
