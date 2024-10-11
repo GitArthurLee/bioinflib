@@ -14,11 +14,14 @@
 - Counting the GC-content `GC`
 - Calculation of the melting point of primers for PCR `tm`
 
-###### $\color{red}{\text{NEW !}}$ `filter_fastq`
+###### `filter_fastq` $\color{pink}{\text{Now with FASTQ-file reading support}}$
 - **Filtering sequences** by:
    - GC-content
    - average reading quality
    - length
+
+###### $\color{red}{\text{NEW!}}$ `convert_multiline_fasta_to_oneline`
+- Сonverts a multi-line sequence into a single line
 
 <div align="center"> <h2 align="center"> Installation </h2> </div>
 
@@ -29,11 +32,16 @@ Clone the repository: `git clone git@github.com:GitArthurLee/bioinflib.git`
 ``` python
 from bioinflib import filter_fastq
 
-EXAMPLE_FASTQ = {'name' : ('sequence', 'quality')}
-print(filter_fastq(EXAMPLE_SEQS, gc_bounds = 60, ength_bounds = 2**32, quality_threshold = 0))
+print(filter_fastq('example.fastq', gc_bounds = 60, ength_bounds = 2**32, quality_threshold = 0))
+```
+
+``` python
+from bio_files_processor import convert_multiline_fasta_to_oneline
+
+convert_multiline_fasta_to_oneline('example_multiline.fasta')
 ```
 <div align="center"> <h2 align="center"> Contact </h2> </div>
 
 Created by aal1999arth@gmail.com
 
-Bioinformatics Institute
+Bioinformatics Institute, 2024
