@@ -23,54 +23,54 @@ ComplementDNA = {
 }
 
 
-def reverse(seq):
+def reverse(seq) -> str:
     return seq[::-1]
 
 
-def transcribe(seq):
+def transcribe(seq) -> str:
     result = ''.join([Transcribe[i] for i in seq])
     return result
 
 
-def complement_RNA(seq):
+def complement_RNA(seq) -> str:
     result = ''.join([ComplementRNA[i] for i in seq])
     return result
 
 
-def complement_DNA(seq):
+def complement_DNA(seq) -> str:
     result = ''.join([ComplementDNA[i] for i in seq])
     return result
 
 
-def reverse_complement_dna(seq):
+def reverse_complement_dna(seq) -> str:
     return reverse(complement_DNA(seq))
 
 
-def reverse_complement_rna(seq):
+def reverse_complement_rna(seq) -> str:
     return reverse(complement_RNA(seq))
 
 
-def is_dna(seq):
+def is_dna(seq) -> bool:
     unique_symbol = set(seq)
     nucleotides = set('ATGCatgc')
     return unique_symbol <= nucleotides
 
 
-def is_rna(seq):
+def is_rna(seq) -> bool:
     unique_symbol = set(seq)
     nucleotides = set('AUGCaugc')
     return unique_symbol <= nucleotides
 
 
-def find_ssDNA_MW(seq):
+def find_ssDNA_MW(seq) -> int:
     return len(seq)*330
 
 
-def find_ssRNA_MW(seq):
+def find_ssRNA_MW(seq) -> int:
     return len(seq)*340
 
 
-def find_GC_content(seq):
+def find_GC_content(seq) -> float:
     content = 0
     for nucl in seq:
         if nucl == 'G' or nucl == 'g' or nucl == 'C' or nucl == 'c':
@@ -78,7 +78,7 @@ def find_GC_content(seq):
     return round(content/len(seq)*100)
 
 
-def find_Tm_primer(seq):
+def find_Tm_primer(seq) -> float:
     content_AT = 0
     content_GC = 0
     for nucl in seq:
