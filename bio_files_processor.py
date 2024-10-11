@@ -27,14 +27,17 @@ def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str = Non
             outfile.write(sequence + '\n')
 
 
-def parse_blast_output(input_file: str, output_file: str) -> None:
+def parse_blast_output(input_file: str, output_file: str = None) -> None:
     """
     Parses the BLAST output, extracting a description of the first match for each request.
     
     Arguments:
     - input_file (str): Path to the input file with BLAST output.
-    - output_file (str): The path to the output file for recording match descriptions.
+    - output_file (str, optional): The path to the output file for recording match descriptions.
     """
+    if output_file is None:
+        output_file = f"{input_file.rsplit('.', 1)[0]}_result.txt"
+
     matches = []
     with open(input_file, 'r') as infile:
         for line in infile:
