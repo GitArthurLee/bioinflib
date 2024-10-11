@@ -100,7 +100,7 @@ def filter_fastq(input_fastq: str,
                  output_fastq: str,
                  gc_bounds: Union[Tuple[float, float], float, int] = (0, 100),
                  length_bounds: Union[Tuple[int, int], int] = (0, 2**32),
-                 quality_threshold: int = 0):
+                 quality_threshold: int = 0) -> None:
     """
     Selects sequences in fastq format according to various parameters.
 
