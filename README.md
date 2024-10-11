@@ -14,7 +14,7 @@
 - Counting the GC-content `GC`
 - Calculation of the melting point of primers for PCR `tm`
 
-###### `filter_fastq` $\color{pink}{\text{Now with FASTQ-file reading support}}$
+###### `filter_fastq` 🔥 $\color{pink}{\text{Now with .FASTQ reading support}}$ 🔥
 - **Filtering sequences** by:
    - GC-content
    - average reading quality
@@ -39,12 +39,13 @@ print(filter_fastq('example.fastq', gc_bounds = 60, ength_bounds = 2**32, qualit
 ```
 
 ``` python
-from bio_files_processor import convert_multiline_fasta_to_oneline
+import bio_files_processor 
 
 convert_multiline_fasta_to_oneline('example_multiline.fasta')
+parse_blast_output('example_blast_results.txt')
 ```
 <div align="center"> <h2 align="center"> Contact </h2> </div>
 
-Created by aal1999arth@gmail.com
+Created by aal1999arth@gmail.com 💚
 
 Bioinformatics Institute, 2024
