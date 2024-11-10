@@ -14,11 +14,17 @@
 - Counting the GC-content `GC`
 - Calculation of the melting point of primers for PCR `tm`
 
-###### $\color{red}{\text{NEW !}}$ `filter_fastq`
+###### `filter_fastq` 🔥 $\color{pink}{\text{Now with .FASTQ reading support}}$ 🔥
 - **Filtering sequences** by:
    - GC-content
    - average reading quality
    - length
+
+###### $\color{red}{\text{NEW!}}$ `convert_multiline_fasta_to_oneline`
+- Сonverts a multi-line sequence into a single line
+
+###### $\color{red}{\text{NEW!}}$ `parse_blast_output`
+- Parses the BLAST output, extracting a description of the first match for each request.
 
 <div align="center"> <h2 align="center"> Installation </h2> </div>
 
@@ -29,11 +35,17 @@ Clone the repository: `git clone git@github.com:GitArthurLee/bioinflib.git`
 ``` python
 from bioinflib import filter_fastq
 
-EXAMPLE_FASTQ = {'name' : ('sequence', 'quality')}
-print(filter_fastq(EXAMPLE_SEQS, gc_bounds = 60, ength_bounds = 2**32, quality_threshold = 0))
+print(filter_fastq('example.fastq', gc_bounds = 60, ength_bounds = 2**32, quality_threshold = 0))
+```
+
+``` python
+import bio_files_processor 
+
+convert_multiline_fasta_to_oneline('example_multiline.fasta')
+parse_blast_output('example_blast_results.txt')
 ```
 <div align="center"> <h2 align="center"> Contact </h2> </div>
 
-Created by aal1999arth@gmail.com
+Created by aal1999arth@gmail.com 💚
 
-Institute of Bioinformatics
+Bioinformatics Institute, 2024
