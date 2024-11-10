@@ -1,7 +1,7 @@
 from typing import List, Tuple, Union, Dict
-from bioinflib_folder_1 import RNA_DNA_Module as RD
-from bioinflib_folder_1 import FILTER_Module as FILTER
-from bioinflib_folder_1 import FASTQ_Module as FQ
+from bioinflib_folder_1 import rna_dna_module as rd
+from bioinflib_folder_1 import filter_module as filter_mod
+from bioinflib_folder_1 import fastq_module as fq
 
 
 def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
@@ -24,67 +24,69 @@ def run_dna_rna_tools(*args: Union[str, int]) -> Union[str, List[str]]:
     result = []
     for seq in args[0:-1]:
         if action == 'complement':
-            if RD.is_dna(seq):
-                complement_seq = RD.complement_DNA(seq)
-                result.append(complement_seq)
-            elif RD.is_rna(seq):
-                complement_seq = RD.complement_RNA(seq)
-                result.append(complement_seq)
+            if rd.is_dna(seq):
+                complement_seq = rd.complement_dna(seq)
+                empty_list.append(complement_seq)
+            elif rd.is_rna(seq):
+                complement_seq = rd.complement_rna(seq)
+                empty_list.append(complement_seq)
+
             else:
                 print(f'{seq} is not RNA or DNA')
 
         elif action == 'reverse_complement':
-            if RD.is_dna(seq):
-                rev_complement_seq = RD.reverse_complement_dna(seq)
+            if rd.is_dna(seq):
+                rev_complement_seq = rd.reverse_complement_dna(seq)
                 result.append(rev_complement_seq)
-            elif RD.is_rna(seq):
-                rev_complement_seq = RD.reverse_complement_rna(seq)
+            elif rd.is_rna(seq):
+                rev_complement_seq = rd.reverse_complement_rna(seq)
                 result.append(rev_complement_seq)
             else:
                 print(f'{seq} is not RNA or DNA')
 
         elif action == 'transcribe':
-            if RD.is_dna(seq) or RD.is_rna(seq):
-                trans_seq = RD.transcribe(seq)
+            if rd.is_dna(seq) or rd.is_rna(seq):
+                trans_seq = rd.transcribe(seq)
                 result.append(trans_seq)
             else:
                 print(f'{seq} is not RNA or DNA')
 
         elif action == 'reverse':
-            if RD.is_dna(seq) or RD.is_rna(seq):
-                rev_seq = RD.reverse(seq)
+            if rd.is_dna(seq) or rd.is_rna(seq):
+                rev_seq = rd.reverse(seq)
                 result.append(rev_seq)
             else:
                 print(f'{seq} is not RNA or DNA')
 
         elif action == 'what_is_that':
-            if RD.is_dna(seq):
+            if rd.is_dna(seq):
                 result.append(f'{seq} is DNA')
-            elif RD.is_rna(seq):
+            elif rd.is_rna(seq):
                 result.append(f'{seq} is RNA')
             else:
                 result.append(f"I don't know what {seq} is")
 
         elif action == 'MW':
-            if RD.is_dna(seq):
-                MW_seq = RD.find_ssDNA_MW(seq)
+            if rd.is_dna(seq):
+                MW_seq = rd.find_ssdna_mw(seq)
                 result.append(MW_seq)
-            elif RD.is_rna(seq):
-                MW_seq = RD.find_ssRNA_MW(seq)
+            elif rd.is_rna(seq):
+                MW_seq = rd.find_ssrna_mw(seq)
                 result.append(MW_seq)
+
             else:
                 print(f"I don't know what {seq} is")
 
         elif action == 'GC':
-            if RD.is_dna(seq) or RD.is_rna(seq):
-                GC_seq = RD.find_GC_content(seq)
+            if rd.is_dna(seq) or rd.is_rna(seq):
+                GC_seq = rd.find_gc_content(seq)
                 result.append(f'{GC_seq}%')
             else:
                 print(f"I don't know what {seq} is")
 
-        elif action == 'Tm':
-            if RD.is_dna(seq):
-                Tm_seq = RD.find_Tm_primer(seq)
+        elif action == 'tm':
+            if rd.is_dna(seq):
+                Tm_seq = rd.find_tm_primer(seq)
                 result.append(f'{Tm_seq} degrees Celsius')
             else:
                 print(f"I can't do it for {seq}")
@@ -123,12 +125,12 @@ def filter_fastq(input_fastq: str,
     if isinstance(length_bounds, (int, float)):
         length_bounds = (0, length_bounds)
 
-    for name, sequence, quality in FQ.read_fastq(input_fastq):
+    for name, sequence, quality in fq.read_fastq(input_fastq):
         seq_length = len(sequence)
-        gc_percentage = FILTER.find_gc_content(sequence)
-        avg_quality = FILTER.find_average_quality(quality)
+        gc_percentage = filter_mod.find_gc_content(sequence)
+        avg_quality = filter_mod.find_average_quality(quality)
         if ((length_bounds[0] <= seq_length <= length_bounds[1])
             and (gc_bounds[0] <= gc_percentage <= gc_bounds[1])
             and (avg_quality >= quality_threshold)):
 
-            FQ.write_fastq(output_fastq, name, sequence, quality)
+            fq.write_fastq(output_fastq, name, sequence, quality)
