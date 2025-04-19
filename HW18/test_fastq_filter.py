@@ -11,12 +11,12 @@ class TestFastqFilter(unittest.TestCase):
         cls.test_output = "test_output.fastq"
         cls.test_log = "test.log"
         
-        # Создаем тестовый FASTQ с разными характеристиками
+        # Создаем FASTQ для теста
         with open(cls.test_input, 'w') as f:
-            f.write("@seq1\nACGT\n+\nIIII\n"    # 50% GC, длина 4, качество ~40
-                    "@seq2\nAAAA\n+\nIIII\n"    # 0% GC, длина 4, качество ~40
-                    "@seq3\nTGCA\n+\n!!!!\n"   # 50% GC, длина 4, качество ~0
-                    "@seq4\nGGGGGG\n+\nIIIIII\n") # 100% GC, длина 6, качество ~40
+            f.write("@seq1\nACGT\n+\nIIII\n"         # 50% GC, длина 4, качество ~40
+                    "@seq2\nAAAA\n+\nIIII\n"         # 0% GC, длина 4, качество ~40
+                    "@seq3\nTGCA\n+\n!!!!\n"         # 50% GC, длина 4, качество ~0
+                    "@seq4\nGGGGGG\n+\nIIIIII\n")    # 100% GC, длина 6, качество ~40
 
     def setUp(self):
         # Очищаем выходные файлы
@@ -68,10 +68,10 @@ class TestFastqFilter(unittest.TestCase):
 
     def test_length_filter(self):
         """Фильтрация по длине >=5"""
-        count = filter_fastq(self.test_input, self.test_output, length_bounds=(5, 100))  # Явно указываем диапазон
+        count = filter_fastq(self.test_input, self.test_output, length_bounds=(5, 100))
         self.assertEqual(count, 1)  # только GGGGGG (длина 6)
         with open(self.test_output) as f:
-            records = list(SeqIO.parse(f, "fastq"))  # Исправлен отступ
+            records = list(SeqIO.parse(f, "fastq"))
             self.assertEqual(len(records), 1)
             self.assertEqual(str(records[0].seq), "GGGGGG")
 
@@ -104,3 +104,5 @@ class TestFastqFilter(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+# pytest test_fastq_filter.py -v

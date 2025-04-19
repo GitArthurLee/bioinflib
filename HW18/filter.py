@@ -122,4 +122,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# python filter.py -i example_fastq.fastq -o output.fastq -g 30,70 -l 50,150 -q 20
+# python filter.py -i input.fastq -o output.fastq -g 30,70 -l 50,150 -q 20
