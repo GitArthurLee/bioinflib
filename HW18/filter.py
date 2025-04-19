@@ -16,14 +16,14 @@ def setup_logging(log_file: str = 'fastq_filter.log'):
     )
 
 def parse_gc_bounds(gc_arg: str) -> Union[Tuple[float, float], float]:
-    """Парсинг аргумента gc_bounds"""
+    """Парсинг gc_bounds"""
     if ',' in gc_arg:
         lower, upper = map(float, gc_arg.split(','))
         return (lower, upper)
     return float(gc_arg)
 
 def parse_length_bounds(len_arg: str) -> Union[Tuple[int, int], int]:
-    """Парсинг аргумента length_bounds"""
+    """Парсинг length_bounds"""
     if ',' in len_arg:
         lower, upper = map(int, len_arg.split(','))
         return (lower, upper)
@@ -35,7 +35,7 @@ def filter_fastq(
     gc_bounds: Union[Tuple[float, float], float] = (0, 100),
     length_bounds: Union[Tuple[int, int], int] = (0, 2**32),
     quality_threshold: Union[float, int] = 0,
-) -> int:
+) -> int: # чтобы тесты делать
     """
     Function filter_fastq
     

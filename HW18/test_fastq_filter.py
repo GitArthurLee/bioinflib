@@ -91,7 +91,7 @@ class TestFastqFilter(unittest.TestCase):
             self.assertIn("Filtered 4 records", log)
 
     def test_error_handling(self):
-        """Проверка обработки ошибок"""
+        """Проверка обнаружения ошибки, если нет инпута"""
         with self.assertRaises(FileNotFoundError):
             filter_fastq("nonexistent.fastq", self.test_output)
 
